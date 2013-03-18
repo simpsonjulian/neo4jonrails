@@ -12,7 +12,7 @@
 <% @internet_addresses.each do |internet_address| %>
   <tr>
     <td><%= internet_address.version %></td>
-    <td><%= internet_address.address %></td>
+    <td><%= internet_address.number %></td>
     <td><%= link_to 'Show', internet_address %></td>
     <td><%= link_to 'Edit', edit_internet_address_path(internet_address) %></td>
     <td><%= link_to 'Destroy', internet_address, :method => :delete, :data => { :confirm => 'Are you sure?' } %></td>

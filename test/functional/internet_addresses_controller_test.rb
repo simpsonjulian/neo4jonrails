@@ -18,7 +18,7 @@ class InternetAddressesControllerTest < ActionController::TestCase
 
   test "should create internet_address" do
     assert_difference('InternetAddress.count') do
-      post :create, :internet_address => { :address => @internet_address.address, :version => @internet_address.version }
+      post :create, :internet_address => { :number => @internet_address.number, :version => @internet_address.version }
     end
 
     assert_redirected_to internet_address_path(assigns(:internet_address))
@@ -35,7 +35,7 @@ class InternetAddressesControllerTest < ActionController::TestCase
   end
 
   test "should update internet_address" do
-    put :update, :id => @internet_address, :internet_address => { :address => @internet_address.address, :version => @internet_address.version }
+    put :update, :id => @internet_address, :internet_address => { :number => @internet_address.number, :version => @internet_address.version }
     assert_redirected_to internet_address_path(assigns(:internet_address))
   end
 

@@ -1,9 +1,10 @@
 class InternetAddress
   extend ActiveModel::Naming
   include ActiveModel::Validations
+  attr_reader :version, :number
 
-  def initialize(address, version = 4)
-    @address, @version = address, version
+  def initialize(address = '192.168.0.1', version = 4)
+    @number, @version = address, version
   end
 
   def persisted?
@@ -13,13 +14,13 @@ class InternetAddress
   def to_key
     nil
   end
-  #
-  #def errors
-  #  false
-  #end
 
   def self.all
   []
+  end
+
+  def save
+    true
   end
 
 end
