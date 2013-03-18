@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Version:</b>
+  <%= @internet_address.version %>
+</p>
+
+<p>
+  <b>Address:</b>
+  <%= @internet_address.address %>
+</p>
+
+
+<%= link_to 'Edit', edit_internet_address_path(@internet_address) %> |
+<%= link_to 'Back', internet_addresses_path %>
