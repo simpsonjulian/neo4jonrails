@@ -40,9 +40,11 @@ class InternetAddressesController < ApplicationController
   # POST /internet_addresses
   # POST /internet_addresses.json
   def create
-    @internet_address = InternetAddress.new(params[:internet_address])
+    parameters = params[:internet_address]
+    @internet_address = InternetAddress.new(parameters[:number], parameters[:version])
 
     respond_to do |format|
+
       if @internet_address.save
         format.html { redirect_to @internet_address, :notice => 'Internet address was successfully created.' }
         format.json { render :json => @internet_address, :status => :created, :location => @internet_address }
