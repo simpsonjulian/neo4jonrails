@@ -13,7 +13,7 @@ class InternetAddressesController < ApplicationController
   # GET /internet_addresses/1
   # GET /internet_addresses/1.json
   def show
-    @internet_address = InternetAddress.find(params[:id])
+    @internet_address = InternetAddress.find_by_integer(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -34,7 +34,7 @@ class InternetAddressesController < ApplicationController
 
   # GET /internet_addresses/1/edit
   def edit
-    @internet_address = InternetAddress.find(params[:id])
+    @internet_address = InternetAddress.find_by_integer(params[:id])
   end
 
   # POST /internet_addresses
@@ -58,7 +58,7 @@ class InternetAddressesController < ApplicationController
   # PUT /internet_addresses/1
   # PUT /internet_addresses/1.json
   def update
-    @internet_address = InternetAddress.find(params[:id])
+    @internet_address = InternetAddress.find_by_integer(params[:id])
 
     respond_to do |format|
       if @internet_address.update_attributes(params[:internet_address])
@@ -74,7 +74,7 @@ class InternetAddressesController < ApplicationController
   # DELETE /internet_addresses/1
   # DELETE /internet_addresses/1.json
   def destroy
-    @internet_address = InternetAddress.find(params[:id])
+    @internet_address = InternetAddress.find_by_integer(params[:id])
     @internet_address.destroy
 
     respond_to do |format|
