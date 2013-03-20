@@ -6,7 +6,7 @@ class InternetAddressesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render :json => @internet_addresses }
+      format.json { render :json => @internet_addresses.as_json(:only => [:number, :version]) }
     end
   end
 
@@ -17,6 +17,7 @@ class InternetAddressesController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
+      #format.json { render :json => @internet_address }
       format.json { render :json => @internet_address }
     end
   end

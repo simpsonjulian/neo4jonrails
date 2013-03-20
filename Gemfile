@@ -20,6 +20,10 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
+group :dev do
+  gem 'metric_fu'
+end
+
 group :test do
   gem 'cucumber-rails', :require => false
   gem 'capybara'
@@ -46,5 +50,5 @@ gem 'jquery-rails'
 # gem 'ruby-debug'
 
 # To use Neo4j
-gem 'neography', '1.0.8'
+gem 'neography', '1.0.5'
 gem 'net-http-spy'
