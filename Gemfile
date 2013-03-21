@@ -50,5 +50,4 @@ gem 'jquery-rails'
 # gem 'ruby-debug'
 
 # To use Neo4j
-gem 'neography', '1.0.5'
-gem 'net-http-spy'
+gem 'neography', '1.0.8'

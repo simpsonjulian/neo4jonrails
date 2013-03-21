@@ -15,13 +15,10 @@ class InternetAddress < ActiveNeography
     neo.create_node_index(model_name)
     @errors = ActiveModel::Errors.new(self)
     @neo_id = neo_id
-
-    require 'net-http-spy'
-    Net::HTTP.http_logger_options = {:body => true}
   end
 
   def to_param
-    IPAddr.new(@number).to_i
+    @neo_id
   end
 
   def self.find_by_octets(number)
@@ -32,12 +29,8 @@ class InternetAddress < ActiveNeography
   end
 
   def self.find_by_integer(number)
-    puts 'asked for ' + number
     number_string = IPAddr.new(number.to_i, Socket::AF_INET).to_s
-    puts "got  #{number_string}"
-
     self.find_by_octets(number_string)
-
   end
 
   def self.cypher_to_object(cypher_results)
@@ -65,8 +58,8 @@ class InternetAddress < ActiveNeography
     begin
       properties = {:number => @number.to_s, :version => @version, :type => model_name}
       neo = get_neo
-      neo.create_unique_node(model_name, model_name, @number, properties)
-      @neo_id = Neography::Node.find(model_name, model_name, @number).neo_id
+      neo.create_unique_node(model_name, model_name.downcase, @number, properties)
+      @neo_id = Neography::Node.find(model_name, model_name.downcase, @number).neo_id
     rescue Exception => e
       @errors.add(:neo, e.message)
       return false
@@ -76,19 +69,23 @@ class InternetAddress < ActiveNeography
   end
 
   def update_attributes(params)
-    node = Neography::Node.find(model_name, model_name, @number)
+    begin
+    node = Neography::Node.find(model_name, model_name.downcase, @number)
     params.each_pair do |key, value|
-      node[key.to_sym] = value
+      Neography::Rest.new.set_node_properties(node, {key => value})
     end
     @neo_id = node.neo_id
+    rescue Exception => e
+      puts e.message
+      return false
+    end
+
+    true
   end
 
   def destroy
-    neo = get_neo
-    if neo.find_node_index(model_name, model_name, @number)
-      neo.remove_node_from_index(model_name, model_name, @number)
-    end
-    Neography::Node.load(@neo_id).del
+    neo = Neography::Rest.new
+    neo.delete_node(@neo_id)
   end
 
 end
