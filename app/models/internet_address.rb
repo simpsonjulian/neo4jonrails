@@ -1,5 +1,16 @@
-require 'ipaddr'
+
 class InternetAddress < ActiveNeography
+  def self.cypher_to_object(cypher_results)
+    results = cypher_results.collect do |result|
+      number = result.first['data']['number']
+      version = result.first['data']['version']
+
+      neo_id = result.first['self'].split('/').last
+      self.new(number, version, neo_id)
+    end
+   results
+  end
+
   def model_name
     self.class.model_name
   end
@@ -21,32 +32,22 @@ class InternetAddress < ActiveNeography
     @neo_id
   end
 
-  def self.find_by_octets(number)
-    cypher_results = Neography::Rest.new.execute_query("start n=node(*) where n.number! = {number} return n",
-                                                       {:number => number})['data']
-
-    cypher_to_object(cypher_results).first
-  end
-
-  def self.find_by_integer(number)
-    number_string = IPAddr.new(number.to_i, Socket::AF_INET).to_s
-    self.find_by_octets(number_string)
-  end
-
-  def self.cypher_to_object(cypher_results)
-    results = cypher_results.collect do |result|
-      number = result.first['data']['number']
-      version = result.first['data']['version']
-
-      neo_id = result.first['self'].split('/').last
-      self.new(number, version, neo_id)
-    end
-    results
-  end
 
   def self.find(*args)
-    puts args.inspect
+    cypher_results = Neography::Rest.new.execute_query("start n=node({id}) return n",
+                                                           {:id => args.first.to_i})['data']
+    results = cypher_to_object(cypher_results)
+    results.length == 1 ? results.first : results
+
   end
+
+  def self.find_by_number(number)
+     cypher_results = Neography::Rest.new.execute_query("start n=node:InternetAddress(internetaddress='{number}') return n",
+                                                            {:number => number})['data']
+     puts cypher_results
+     cypher_to_object(cypher_results)
+
+   end
 
   def self.all
     cypher_results = Neography::Rest.new.execute_query("start n=node(*) where n.type! = {type} return n",

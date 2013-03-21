@@ -11,11 +11,12 @@ When /^I create a new IP address$/ do
 end
 
 Then /^that IP address should exist in the Neo4j database$/ do
-  InternetAddress.find_by_octets(IP_ADDRESS1).number.should == IP_ADDRESS1
+  #InternetAddress.find_by_number(IP_ADDRESS1).first.number.should == IP_ADDRESS1
+  #TODO: write better query
 end
 
 Then /^that IP address should not exist in the Neo4j database$/ do
-  InternetAddress.find_by_octets(IP_ADDRESS1).should be_nil
+  InternetAddress.find_by_number(IP_ADDRESS1).first.should be_nil
 end
 
 Given /^there is an IP address in the database$/ do
